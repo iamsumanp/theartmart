@@ -11,20 +11,30 @@ datasource db {
 }
 
 model Art {
-  id            Int      @id @default(autoincrement())
+  id            String   @id @default(cuid())
   title         String   @unique
   description   String?
   image         String   
-  
+  reviewed      Boolean  @default(false)
+  artist        User?    @relation(fields:[artistId],references: [id])
+  artistId      String?  
 }
 model User {
-  id            Int      @id @default(autoincrement())
+  id            String   @id @default(cuid())
   email         String   @unique
   name          String?
+  arts          Art[]
+  role          Role     @default(USER)
 }
 
-model Post {
-  id            String     @default(cuid()) @id
-  title         String
-  content       String?
+// model Post {
+//   id            String    @id @default(cuid())
+//   title         String
+//   content       String?
+// }
+
+enum Role {
+  USER
+  ADMIN
 }
+
